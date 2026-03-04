@@ -1,0 +1,52 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mall-mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  redis:
+    image: redis:7.0
+    container_name: mall-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/data:/data
+
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: mall-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=123
+    volumes:
+      - ./rabbitmq/data:/var/lib/rabbitmq
+
+  mongodb:
+    image: mongo:4.4.15
+    container_name: mall-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./mongo/data:/data/db
+
+  minio:
+    image: minio/minio
+    container_name: mall-minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    volumes:
+      - ./minio/data:/data
+    command: server /data --console-address ":9001"

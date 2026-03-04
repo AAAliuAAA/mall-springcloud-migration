@@ -1,0 +1,34 @@
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.10
+    container_name: mall-elasticsearch
+    environment:
+      - "cluster.name=elasticsearch"
+      - "discovery.type=single-node"
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g" # 既然内存够，给1G起步
+    volumes:
+      - ./es/data:/usr/share/elasticsearch/data
+      - ./es/plugins:/usr/share/elasticsearch/plugins
+    ports:
+      - "9200:9200"
+
+  logstash:
+    image: logstash:7.17.10
+    container_name: mall-logstash
+    volumes:
+      - ./logstash/pipeline/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+    environment:
+      - "LS_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "4560:4560"
+    # 注意：在独立文件中，这仅表达启动顺序，实际网络连接需靠localhost或自定义网桥
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    image: kibana:7.17.10
+    container_name: mall-kibana
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
