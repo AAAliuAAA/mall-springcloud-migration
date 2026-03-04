@@ -21,6 +21,9 @@ https://github.com/macrozheng/mall
 - 熔断器：Sentinel
 - 定时任务调度：XXLJob
 
+# 迁移效果展示
+请关注分支my-config
+
 
 ## 说明
 本项目基于 [macrozheng/mall](https://github.com/macrozheng/mall) 进行二次配置和修改，
