@@ -53,6 +53,10 @@
         <mall-common.version>1.0-SNAPSHOT</mall-common.version>
         <mall-mbg.version>1.0-SNAPSHOT</mall-mbg.version>
         <mall-security.version>1.0-SNAPSHOT</mall-security.version>
+
+        <spring-cloud.version>2021.0.5</spring-cloud.version>
+        <spring-cloud-alibaba.version>2021.0.5.0</spring-cloud-alibaba.version>
+
     </properties>
 
     <dependencies>
@@ -92,6 +96,24 @@
 
     <dependencyManagement>
         <dependencies>
+            <!--Spring Cloud 依赖管理-->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!--Spring Cloud Alibaba 依赖管理-->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+
             <!--mall通用模块-->
             <dependency>
                 <groupId>com.macro.mall</groupId>
@@ -213,8 +235,8 @@
                     <groupId>io.fabric8</groupId>
                     <artifactId>docker-maven-plugin</artifactId>
                     <version>${docker.maven.plugin.version}</version>
-                        <executions>
-                            <!--如果想在项目打包时构建镜像添加-->
+                        <!--<executions>
+                            &lt;!&ndash;如果想在项目打包时构建镜像添加&ndash;&gt;
                             <execution>
                                 <id>build-image</id>
                                 <phase>package</phase>
@@ -222,7 +244,7 @@
                                     <goal>build</goal>
                                 </goals>
                             </execution>
-                        </executions>
+                        </executions>-->
                     <configuration>
                         <!-- Docker 远程管理地址-->
                         <dockerHost>${docker.host}</dockerHost>
