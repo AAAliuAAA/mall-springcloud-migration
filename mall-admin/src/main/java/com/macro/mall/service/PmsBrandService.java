@@ -56,4 +56,13 @@ public interface PmsBrandService {
      * 修改厂家制造商状态
      */
     int updateFactoryStatus(List<Long> ids, Integer factoryStatus);
+
+    /**
+     * get recommended brand list
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<PmsBrand> recommendList(Integer pageNum, Integer pageSize);
+
 }

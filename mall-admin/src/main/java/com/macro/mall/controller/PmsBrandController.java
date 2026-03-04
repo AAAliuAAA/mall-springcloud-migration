@@ -130,4 +130,15 @@ public class PmsBrandController {
             return CommonResult.failed();
         }
     }
+
+
+    @ApiOperation(value = "get recommended brand list ")
+    @RequestMapping(value = "/recommendList", method = RequestMethod.GET)
+    @ResponseBody
+    public CommonResult<List<PmsBrand>> recommendList(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                      @RequestParam(value = "pageSize", defaultValue = "6") Integer pageSize) {
+         List<PmsBrand> recommendedList = brandService.recommendList(pageNum,pageSize);
+         return CommonResult.success(recommendedList);
+    }
+
 }

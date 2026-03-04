@@ -2,6 +2,7 @@ package com.macro.mall.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.pagehelper.PageHelper;
+import com.macro.mall.dao.SmsBrandRecommendDao;
 import com.macro.mall.dto.PmsBrandParam;
 import com.macro.mall.mapper.PmsBrandMapper;
 import com.macro.mall.mapper.PmsProductMapper;
@@ -26,6 +27,8 @@ public class PmsBrandServiceImpl implements PmsBrandService {
     private PmsBrandMapper brandMapper;
     @Autowired
     private PmsProductMapper productMapper;
+    @Autowired
+    private SmsBrandRecommendDao brandRecommendDao;
 
     @Override
     public List<PmsBrand> listAllBrand() {
@@ -110,4 +113,12 @@ public class PmsBrandServiceImpl implements PmsBrandService {
         pmsBrandExample.createCriteria().andIdIn(ids);
         return brandMapper.updateByExampleSelective(pmsBrand, pmsBrandExample);
     }
+
+    @Override
+    public List<PmsBrand> recommendList(Integer pageNum, Integer pageSize) {
+        int offset = (pageNum - 1) * pageSize;
+        return brandRecommendDao.getRecommendBrandList(offset,pageSize);
+    }
+
+
 }
