@@ -2,12 +2,14 @@ package com.macro.mall.portal.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.macro.mall.common.api.CommonPage;
+import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.mapper.PmsBrandMapper;
 import com.macro.mall.mapper.PmsProductMapper;
 import com.macro.mall.model.PmsBrand;
 import com.macro.mall.model.PmsProduct;
 import com.macro.mall.model.PmsProductExample;
 import com.macro.mall.portal.dao.HomeDao;
+import com.macro.mall.portal.feign.AdminBrandFeign;
 import com.macro.mall.portal.service.PmsPortalBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,11 +28,15 @@ public class PmsPortalBrandServiceImpl implements PmsPortalBrandService {
     private PmsBrandMapper brandMapper;
     @Autowired
     private PmsProductMapper productMapper;
+    @Autowired
+    private AdminBrandFeign adminBrandFeign;
 
     @Override
     public List<PmsBrand> recommendList(Integer pageNum, Integer pageSize) {
-        int offset = (pageNum - 1) * pageSize;
-        return homeDao.getRecommendBrandList(offset, pageSize);
+
+        CommonResult<List<PmsBrand>> result =
+                adminBrandFeign.recommendList(pageNum, pageSize);
+        return result.getData();
     }
 
     @Override
