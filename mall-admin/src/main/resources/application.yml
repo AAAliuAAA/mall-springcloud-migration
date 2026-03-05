@@ -53,6 +53,7 @@ secure:
       - /admin/info
       - /admin/logout
       - /minio/upload
+      - /brand/recommendList
 
 aliyun:
   oss:
