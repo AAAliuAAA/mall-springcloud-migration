@@ -33,3 +33,22 @@ spring:
             - Path=/search/**
           filters:
             - StripPrefix=1
+
+jwt:
+  secret: mall-admin-secret
+  tokenHead: "Bearer "
+
+secure:
+  ignored:
+    urls:
+      - /admin/admin/login # 注意有了服务路径了以后需要将服务路径也添加进去
+      - /portal/sso/login
+      - /portal/sso/register
+      - /admin/swagger-ui/**
+      - /admin/swagger-resources/**
+      - /admin/v2/api-docs
+      - /portal/swagger-ui/**
+      - /portal/swagger-resources/**
+      - /portal/v2/api-docs
+      - /search/swagger-ui/**
+      - /*/actuator/**
