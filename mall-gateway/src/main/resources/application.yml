@@ -1,0 +1,35 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      routes:
+        # mall-admin 路由
+        - id: mall-admin
+          uri: lb://mall-admin        # lb 表示通过 Nacos 负载均衡
+          predicates:
+            - Path=/admin/**          # 匹配 /admin/ 开头的请求
+          filters:
+            - StripPrefix=1           # 转发时去掉第一段路径
+
+        # mall-portal 路由
+        - id: mall-portal
+          uri: lb://mall-portal
+          predicates:
+            - Path=/portal/**
+          filters:
+            - StripPrefix=1
+
+        # mall-search 路由
+        - id: mall-search
+          uri: lb://mall-search
+          predicates:
+            - Path=/search/**
+          filters:
+            - StripPrefix=1
