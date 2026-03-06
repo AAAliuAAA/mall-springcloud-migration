@@ -44,6 +44,8 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         for (String ignoreUrl : ignoreUrlsConfig.getUrls()) {
             if (pathMatcher.match(ignoreUrl, path)) {
+                request = exchange.getRequest().mutate().header("X-User-Name", "").build();
+                exchange = exchange.mutate().request(request).build();
                 return chain.filter(exchange);
             }
         }
