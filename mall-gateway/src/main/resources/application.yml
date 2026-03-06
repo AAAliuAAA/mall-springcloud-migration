@@ -46,8 +46,11 @@ secure:
   ignored:
     urls:
       - /admin/admin/login # 注意有了服务路径了以后需要将服务路径也添加进去
-      - /portal/sso/login
-      - /portal/sso/register
+      - /portal/sso/**
+      - /portal/home/**
+      - /portal/product/**
+      - /portal/brand/**
+      - /portal/alipay/**
       - /admin/swagger-ui/**
       - /admin/swagger-resources/**
       - /admin/v2/api-docs

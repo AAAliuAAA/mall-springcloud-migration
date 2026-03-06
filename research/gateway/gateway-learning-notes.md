@@ -96,3 +96,40 @@ public CorsWebFilter corsFilter() {
 }
 ```
 
+## 6. Step 9: OpenFeign 内部微服务调用身份透传
+在使用 Spring Cloud 体系时，微服务间相互调用往往使用基于声明式的 `OpenFeign`。由于前端到微服务的首层请求是由 Gateway 负责拦截、验证 JWT 并将身份信息以 HTTP Header 的形式注入，但当此微服务（如 `mall-portal`）再次借用 Feign 向下级微服务（如 `mall-admin`）发起链路调用时，原生 Feign Client 默认不会自动携带当前请求里的自定义 Header，这就导致下游无法正常获取操作人身份！
+
+### 6.1 编写全局 Feign RequestInterceptor
+在拥有调用方身份的服务（本例中唯一用到 Feign 的是 `mall-portal` 模块）添加 `FeignConfig.java`：
+```java
+package com.macro.mall.portal.config;
+
+import com.macro.mall.common.constant.AuthConstant;
+import cn.hutool.core.util.StrUtil;
+import feign.RequestInterceptor;
+import feign.RequestTemplate;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import javax.servlet.http.HttpServletRequest;
+
+@Configuration
+public class FeignConfig {
+    @Bean
+    public RequestInterceptor requestInterceptor() {
+        return requestTemplate -> {
+            ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+            if (attributes != null) {
+                HttpServletRequest request = attributes.getRequest();
+                String username = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
+                if (StrUtil.isNotEmpty(username)) {
+                    requestTemplate.header(AuthConstant.USER_TOKEN_HEADER, username);
+                }
+            }
+        };
+    }
+}
+```
+通过向 Spring 上下文抛出一个 `RequestInterceptor` Bean，使得该模块下的所有 `@FeignClient` 接口在握手发送之前，都会自动钩取当前主线程的 Request 标头 `X-User-Name` 并透传给被调用方，彻底打通整个内部集群的鉴权信任全链路！
