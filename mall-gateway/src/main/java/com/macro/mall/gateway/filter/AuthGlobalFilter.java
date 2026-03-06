@@ -2,6 +2,7 @@ package com.macro.mall.gateway.filter;
 
 import com.macro.mall.gateway.config.IgnoreUrlsConfig;
 import com.macro.mall.gateway.util.GatewayJwtTokenUtil;
+import com.macro.mall.common.constant.AuthConstant;
 import cn.hutool.core.util.StrUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,9 +45,10 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         AntPathMatcher pathMatcher = new AntPathMatcher();
         for (String ignoreUrl : ignoreUrlsConfig.getUrls()) {
             if (pathMatcher.match(ignoreUrl, path)) {
-                request = exchange.getRequest().mutate().header("X-User-Name", "").build();
-                exchange = exchange.mutate().request(request).build();
-                return chain.filter(exchange);
+                ServerHttpRequest cleanRequest = exchange.getRequest().mutate()
+                        .headers(headers -> headers.remove(AuthConstant.USER_TOKEN_HEADER))
+                        .build();
+                return chain.filter(exchange.mutate().request(cleanRequest).build());
             }
         }
 
@@ -73,7 +75,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
             // 5. 验证通过，将用户信息放入头部传递给下游业务微服务
             ServerHttpRequest newRequest = request.mutate()
-                    .header("X-User-Name", username)
+                    .header(AuthConstant.USER_TOKEN_HEADER, username)
                     .build();
 
             return chain.filter(exchange.mutate().request(newRequest).build());

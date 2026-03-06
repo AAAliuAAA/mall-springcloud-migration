@@ -4,6 +4,10 @@ server:
 spring:
   application:
     name: mall-gateway
+  main:
+    web-application-type: reactive
+  profiles:
+    active: dev #默认为开发环境
   cloud:
     nacos:
       discovery:

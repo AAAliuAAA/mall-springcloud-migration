@@ -3,6 +3,7 @@ package com.macro.mall.security.component;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import com.macro.mall.common.constant.AuthConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,8 +32,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain chain) throws ServletException, IOException {
-        String username = request.getHeader("X-User-Name");
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        String username = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
+        if (cn.hutool.core.util.StrUtil.isNotEmpty(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             LOGGER.info("checking username:{}", username);
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
