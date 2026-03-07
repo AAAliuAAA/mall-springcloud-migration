@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: mall-gateway
+  cloud:
+    nacos:
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        namespace: dev # 请注意：如果 Nacos 中生成的命名空间 ID 是 UUID，这里需替换为真实 ID
+        group: DEFAULT_GROUP
+        shared-configs:
+          - data-id: mall-common-dev.yaml
+            group: DEFAULT_GROUP
+            refresh: true
+  profiles:
+    active: dev
