@@ -27,10 +27,21 @@
   - 在 `mall-gateway` 引入网关专属适配模块 `spring-cloud-alibaba-sentinel-gateway`。
   - 通过代码或 Nacos 配置对 Portal 和 Admin 路由增加限流规则。
 
-### 阶段四：规则持久化至 Nacos (生产必备)
-- [ ] **Step 7：Sentinel 规则持久化到 Nacos**
-  - 引入 `sentinel-datasource-nacos` 依赖。
-  - 配置 `datasource` 从 Nacos 的 JSON 文件动态加载 `flow-rules` 和 `degrade-rules`。
+### 阶段四：生产环境架构完善
+- [x] **Step 7：Sentinel 规则持久化到 Nacos**
+  - 在 `mall-admin` （等核心模块）引入 `sentinel-datasource-nacos`。
+  - 在配置中添加 `spring.cloud.sentinel.datasource` 节点，绑定 Nacos。
+  - 在 Nacos 的 `dev` 命名空间中创建流控、熔断规则 JSON 配置。
+
+### 阶段五：测试与验证
+- [ ] **Test 1：Feign 熔断降级**
+  - **前置**：启动 Nacos, Sentinel, Redis, RabbitMQ。启动 Gateway, Portal。（强制不要启动 Admin）
+  - **操作**：通过浏览器或 Postman 访问 `/portal/brand/recommendList?pageNum=1&pageSize=6`。
+  - **预期**：快速返回 HTTP 200 和空数组 `[]`，无 500 报错和大量超时等待。
+- [ ] **Test 2：Nacos 规则持久化拉取**
+  - **前置**：在 Nacos 控制台建好 `mall-admin-flow-rules`、`mall-admin-degrade-rules` 和 `mall-gateway-flow-rules` 配置（可从 `sentinel-nacos-configs.md` 复制）。
+  - **操作**：重启 `mall-admin` 和 `mall-gateway` 服务。
+  - **预期**：刷新 Sentinel Dashboard，能直接在页面的流控/降级规则里看到 Nacos 中配置的规则，无需再在 Dashboard 手动加。
 
 ## 3. 验证计划
 - 启动服务后，验证控制台连接情况（触发一次 API 请求以懒加载注册）。
