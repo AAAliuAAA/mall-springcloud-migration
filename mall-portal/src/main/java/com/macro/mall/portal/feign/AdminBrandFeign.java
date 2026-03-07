@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 
-@FeignClient(name = "mall-admin")  // 对应 Nacos 里注册的服务名
+@FeignClient(name = "mall-admin", fallbackFactory = AdminBrandFeignFallbackFactory.class)  // 对应 Nacos 里注册的服务名
 public interface AdminBrandFeign {
 
     @GetMapping("/brand/recommendList")

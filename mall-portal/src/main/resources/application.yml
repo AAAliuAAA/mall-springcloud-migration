@@ -11,6 +11,10 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
 
+feign:
+  sentinel:
+    enabled: true
+
 # 以下配置已迁移至 Nacos
 # mybatis, jwt, secure, redis, mongo, rabbitmq 均已在 mall-common-dev.yaml 和 mall-portal-dev.yaml 中配置
 

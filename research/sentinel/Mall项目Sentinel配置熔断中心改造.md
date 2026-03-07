@@ -129,7 +129,7 @@ java -Dserver.port=8858 \
 
 ### Step 2：各服务引入 Sentinel 依赖
 
-**涉及模块**：mall-gateway、mall-portal、mall-admin
+**涉及模块**：mall-gateway、mall-portal、mall-admin、mall-search
 
 ```xml
 <!-- Sentinel 核心 -->
@@ -160,6 +160,7 @@ spring:
 - mall-admin：8719
 - mall-portal：8720
 - mall-gateway：8721
+- mall-search：8722
 
 ### Step 4：OpenFeign 开启 Sentinel 支持
 
