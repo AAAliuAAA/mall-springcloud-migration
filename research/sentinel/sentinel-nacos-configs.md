@@ -111,3 +111,24 @@
   }
 ]
 ```
+
+---
+
+### 6. mall-search 流控规则（Sentinel）：mall-search-flow-rules
+- **Data ID**: `mall-search-flow-rules`
+- **Group**: `SENTINEL_GROUP`
+- **Format**: `JSON`
+- **Configuration Content**:
+```json
+[
+  {
+    "resource": "/search/product/search",
+    "limitApp": "default",
+    "grade": 1,
+    "count": 200,
+    "strategy": 0,
+    "controlBehavior": 0,
+    "clusterMode": false
+  }
+]
+```

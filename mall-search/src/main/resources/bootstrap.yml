@@ -7,6 +7,15 @@ spring:
         dashboard: localhost:8858
         port: 8722
       eager: true
+      datasource:
+        search-flow-rules:
+          nacos:
+            server-addr: 127.0.0.1:8848
+            namespace: dev
+            data-id: mall-search-flow-rules
+            group-id: SENTINEL_GROUP
+            data-type: json
+            rule-type: flow
     nacos:
       config:
         server-addr: 127.0.0.1:8848
