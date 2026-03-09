@@ -82,6 +82,8 @@
                         "pid": "${PID:-}",
                         "thread": "%thread",
                         "class": "%logger",
+                        "traceId": "%X{traceId:-}",
+                        "spanId": "%X{spanId:-}",
                         "message": "%message",
                         "stack_trace": "%exception{20}"
                         }
@@ -115,6 +117,8 @@
                         "pid": "${PID:-}",
                         "thread": "%thread",
                         "class": "%logger",
+                        "traceId": "%X{traceId:-}",
+                        "spanId": "%X{spanId:-}",
                         "message": "%message",
                         "stack_trace": "%exception{20}"
                         }
@@ -143,6 +147,8 @@
                         "pid": "${PID:-}",
                         "thread": "%thread",
                         "class": "%logger",
+                        "traceId": "%X{traceId:-}",
+                        "spanId": "%X{spanId:-}",
                         "message": "%message",
                         "stack_trace": "%exception{20}"
                         }
@@ -169,6 +175,8 @@
                         "level": "%level",
                         "service": "${APP_NAME:-}",
                         "class": "%logger",
+                        "traceId": "%X{traceId:-}",
+                        "spanId": "%X{spanId:-}",
                         "message": "%message"
                         }
                     </pattern>
