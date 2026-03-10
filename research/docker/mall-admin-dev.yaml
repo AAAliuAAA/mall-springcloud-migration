@@ -1,0 +1,74 @@
+spring:
+  datasource:
+    url: jdbc:mysql://mysql:3306/mall?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    username: root
+    password: 123
+    druid:
+      initial-size: 5 #连接池初始化大小
+      min-idle: 10 #最小空闲连接数
+      max-active: 20 #最大连接数
+      web-stat-filter:
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*" #不统计这些请求数据
+      stat-view-servlet: #访问监控网页的登录用户名和密码
+        login-username: druid
+        login-password: druid
+  redis:
+    host: redis
+    database: 0
+    port: 6379
+    password:
+    timeout: 300ms
+
+redis:
+  key:
+    admin: 'ums:admin'
+    resourceList: 'ums:resourceList'
+
+secure:
+  ignored:
+    urls:
+      - /swagger-ui/
+      - /swagger-resources/**
+      - /**/v2/api-docs
+      - /**/*.html
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.map
+      - /favicon.ico
+      - /actuator/**
+      - /druid/**
+      - /admin/login
+      - /admin/register
+      - /admin/info
+      - /admin/logout
+      - /minio/upload
+      - /brand/recommendList
+
+aliyun:
+  oss:
+    endpoint: oss-cn-shenzhen.aliyuncs.com
+    accessKeyId: test
+    accessKeySecret: test
+    bucketName: macro-oss
+    policy:
+      expire: 300
+    maxSize: 10
+    callback: http://39.98.190.128:8080/aliyun/oss/callback
+    dir:
+      prefix: mall/images/
+
+minio:
+  endpoint: http://minio:9000
+  bucketName: mall
+  accessKey: minioadmin
+  secretKey: minioadmin
+
+logging:
+  level:
+    root: info
+    com.macro.mall: debug
+
+logstash:
+  host: logstash
+  enableInnerLog: false

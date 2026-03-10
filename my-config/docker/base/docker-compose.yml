@@ -10,6 +10,27 @@ services:
       - ./mysql/data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
 
+  nacos:
+    image: nacos/nacos-server:v2.1.2
+    container_name: nacos
+    depends_on:
+      - mysql
+    environment:
+      - MODE=standalone
+      - SPRING_DATASOURCE_PLATFORM=mysql
+      - MYSQL_SERVICE_HOST=host.docker.internal
+      - MYSQL_SERVICE_DB_NAME=nacos_config
+      - MYSQL_SERVICE_PORT=3306
+      - MYSQL_SERVICE_USER=root
+      - MYSQL_SERVICE_PASSWORD=123
+      - JVM_XMS=512m
+      - JVM_XMX=512m
+      - NACOS_AUTH_ENABLE=false
+    ports:
+      - "8848:8848"
+      - "9848:9848"
+    restart: unless-stopped
+
   redis:
     image: redis:7.0
     container_name: mall-redis
@@ -50,3 +71,35 @@ services:
     volumes:
       - ./minio/data:/data
     command: server /data --console-address ":9001"
+
+  sentinel:
+    image: bladex/sentinel-dashboard:1.8.6
+    container_name: mall-sentinel
+    depends_on:
+      - nacos
+    ports:
+      - "8858:8858"
+    environment:
+      - JAVA_OPTS=-Dserver.port=8858 -Dcsp.sentinel.dashboard.server=localhost:8858 -Dproject.name=sentinel-dashboard -Dsentinel.dashboard.auth.username=sentinel -Dsentinel.dashboard.auth.password=123456
+    restart: unless-stopped
+
+  zipkin:
+    image: openzipkin/zipkin:2
+    container_name: mall-zipkin
+    depends_on:
+      - mysql
+    ports:
+      - "9411:9411"
+    environment:
+      - STORAGE_TYPE=mysql
+      - MYSQL_HOST=host.docker.internal
+      - MYSQL_TCP_PORT=3306
+      - MYSQL_DB=zipkin
+      - MYSQL_USER=root
+      - MYSQL_PASS=123
+    restart: unless-stopped
+
+networks:
+  default:
+    name: mall-network
+    external: true

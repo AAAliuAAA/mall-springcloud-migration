@@ -1,0 +1,57 @@
+services:
+  mall-admin:
+    build:
+      context: ./mall-admin
+      dockerfile: Dockerfile
+    container_name: mall-admin
+    ports:
+      - "8080:8080"
+    environment:
+      - NACOS_SERVER_ADDR=nacos:8848
+      - SENTINEL_DASHBOARD=sentinel:8858
+      - ZIPKIN_BASE_URL=http://zipkin:9411
+    restart: unless-stopped
+
+  mall-portal:
+    build:
+      context: ./mall-portal
+      dockerfile: Dockerfile
+    container_name: mall-portal
+    ports:
+      - "8085:8085"
+    environment:
+      - NACOS_SERVER_ADDR=nacos:8848
+      - SENTINEL_DASHBOARD=sentinel:8858
+      - ZIPKIN_BASE_URL=http://zipkin:9411
+    restart: unless-stopped
+
+  mall-search:
+    build:
+      context: ./mall-search
+      dockerfile: Dockerfile
+    container_name: mall-search
+    ports:
+      - "8081:8081"
+    environment:
+      - NACOS_SERVER_ADDR=nacos:8848
+      - SENTINEL_DASHBOARD=sentinel:8858
+      - ZIPKIN_BASE_URL=http://zipkin:9411
+    restart: unless-stopped
+
+  mall-gateway:
+    build:
+      context: ./mall-gateway
+      dockerfile: Dockerfile
+    container_name: mall-gateway
+    ports:
+      - "8088:8088"
+    environment:
+      - NACOS_SERVER_ADDR=nacos:8848
+      - SENTINEL_DASHBOARD=sentinel:8858
+      - ZIPKIN_BASE_URL=http://zipkin:9411
+    restart: unless-stopped
+
+networks:
+  default:
+    name: mall-network
+    external: true

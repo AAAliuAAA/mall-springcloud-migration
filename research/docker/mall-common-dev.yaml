@@ -1,0 +1,15 @@
+jwt:
+  tokenHeader: Authorization
+  secret: mall-admin-secret # 目前admin和gateway用这个
+  expiration: 604800
+  tokenHead: 'Bearer '
+
+redis:
+  database: mall
+  expire:
+    common: 86400 # 24小时
+
+mybatis:
+  mapper-locations:
+    - classpath:dao/*.xml
+    - classpath*:com/**/mapper/*.xml

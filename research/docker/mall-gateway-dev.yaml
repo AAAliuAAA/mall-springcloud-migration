@@ -1,0 +1,40 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: mall-admin
+          uri: lb://mall-admin
+          predicates:
+            - Path=/admin/**
+          filters:
+            - StripPrefix=1
+        - id: mall-portal
+          uri: lb://mall-portal
+          predicates:
+            - Path=/portal/**
+          filters:
+            - StripPrefix=1
+        - id: mall-search
+          uri: lb://mall-search
+          predicates:
+            - Path=/search/**
+          filters:
+            - StripPrefix=1
+
+secure:
+  ignored:
+    urls:
+      - /admin/admin/login
+      - /portal/sso/**
+      - /portal/home/**
+      - /portal/product/**
+      - /portal/alipay/**
+      - /portal/brand/**
+      - /admin/swagger-ui/**
+      - /admin/swagger-resources/**
+      - /admin/v2/api-docs
+      - /portal/swagger-ui/**
+      - /portal/swagger-resources/**
+      - /portal/v2/api-docs
+      - /search/swagger-ui/**
+      - /*/actuator/**
